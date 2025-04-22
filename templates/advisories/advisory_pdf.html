@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agromet Advisory Service Bulletin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #000;
+        }
+        .header img {
+            height: 50px;
+            vertical-align: middle;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .subtitle {
+            font-size: 14px;
+            margin: 0;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .table th, .table td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .advisory {
+            margin-left: 20px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 20px;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://www.imd.gov.in/images/logo.png" alt="IMD Logo">
+        <div class="title">Agromet Advisory Service Bulletin for {{ district }}</div>
+        <div class="subtitle">(Issued jointly by AMFU, RARS Vellayani, Kerala Agricultural University & India Meteorological Department)</div>
+        <div class="subtitle">Based on Ensemble Weather forecast by IMD</div>
+        <div class="subtitle">Bulletin No. TVM-AAS-{{ bulletin_number }}/{{ date }}</div>
+    </div>
+
+    <div class="section">
+        <h2>SIGNIFICANT WEATHER FORECAST FOR THE PRECEDING WEEK</h2>
+        <table class="table">
+            <tr>
+                <th>Rainfall(mm)</th>
+                <th>Max Temperature(°C)</th>
+                <th>Min Temperature(°C)</th>
+                <th>Relative Humidity (%)</th>
+                <th>Evaporation(mm)</th>
+            </tr>
+            <tr>
+                <td>{{ rainfall }}</td>
+                <td>{{ max_temp }}</td>
+                <td>{{ min_temp }}</td>
+                <td>{{ humidity }}</td>
+                <td>{{ evaporation }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>WEATHER FORECAST FOR THE NEXT FIVE DAYS</h2>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>26/02/2025</th>
+                <th>27/02/2025</th>
+                <th>28/02/2025</th>
+                <th>01/03/2025</th>
+                <th>02/03/2025</th>
+            </tr>
+            <tr>
+                <td>Rainfall (mm)</td>
+                <td>{{ forecast.rainfall.0 }}</td>
+                <td>{{ forecast.rainfall.1 }}</td>
+                <td>{{ forecast.rainfall.2 }}</td>
+                <td>{{ forecast.rainfall.3 }}</td>
+                <td>{{ forecast.rainfall.4 }}</td>
+            </tr>
+            <tr>
+                <td>Maximum temperature (°C)</td>
+                <td>{{ forecast.max_temp.0 }}</td>
+                <td>{{ forecast.max_temp.1 }}</td>
+                <td>{{ forecast.max_temp.2 }}</td>
+                <td>{{ forecast.max_temp.3 }}</td>
+                <td>{{ forecast.max_temp.4 }}</td>
+            </tr>
+            <tr>
+                <td>Minimum temperature (°C)</td>
+                <td>{{ forecast.min_temp.0 }}</td>
+                <td>{{ forecast.min_temp.1 }}</td>
+                <td>{{ forecast.min_temp.2 }}</td>
+                <td>{{ forecast.min_temp.3 }}</td>
+                <td>{{ forecast.min_temp.4 }}</td>
+            </tr>
+            <tr>
+                <td>Maximum Relative Humidity (%)</td>
+                <td>{{ forecast.humidity_max.0 }}</td>
+                <td>{{ forecast.humidity_max.1 }}</td>
+                <td>{{ forecast.humidity_max.2 }}</td>
+                <td>{{ forecast.humidity_max.3 }}</td>
+                <td>{{ forecast.humidity_max.4 }}</td>
+            </tr>
+            <tr>
+                <td>Wind speed (kmph)</td>
+                <td>{{ forecast.wind_speed.0 }}</td>
+                <td>{{ forecast.wind_speed.1 }}</td>
+                <td>{{ forecast.wind_speed.2 }}</td>
+                <td>{{ forecast.wind_speed.3 }}</td>
+                <td>{{ forecast.wind_speed.4 }}</td>
+            </tr>
+            <tr>
+                <td>Wind direction (deg)</td>
+                <td>{{ forecast.wind_dir.0 }}</td>
+                <td>{{ forecast.wind_dir.1 }}</td>
+                <td>{{ forecast.wind_dir.2 }}</td>
+                <td>{{ forecast.wind_dir.3 }}</td>
+                <td>{{ forecast.wind_dir.4 }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>TOTAL CLOUD COVER (octa) & WEATHER SUMMARY ALERT</h2>
+        <p>There is a chance of {{ cloud_cover }} rainfall in {{ weather_summary }} places of the district.</p>
+        <p>Cumulatively below normal rainfall is likely over Kerala.</p>
+    </div>
+
+    <div class="section">
+        <h2>GENERAL ADVISORY</h2>
+        <p class="advisory">To prevent dehydration, drink plenty of water at regular intervals. With increased evaporation and persistent dry atmospheric conditions, ensure timely irrigation for crops and maintain adequate soil moisture levels.</p>
+    </div>
+
+    <div class="section">
+        <h2>AGRO-METEOROLOGICAL ADVISORIES</h2>
+        <table class="table">
+            <tr>
+                <th>Crop</th>
+                <th>Pest/Disease</th>
+                <th>Advisory</th>
+            </tr>
+            {% for advisory in advisories %}
+                <tr>
+                    <td>{{ advisory.crop }}</td>
+                    <td>{{ advisory.pest }}</td>
+                    <td>{{ advisory.advice }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>© {{ current_year }} India Meteorological Department. All rights reserved.</p>
+    </div>
+</body>
+</html>
